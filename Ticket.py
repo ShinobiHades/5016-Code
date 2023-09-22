@@ -19,6 +19,7 @@ class Ticket:
                 self.display()
             else:
                 print("that is not a valid command")
+    # create a ticket object
     def ticket(self):
         self.ID = str(input("Enter your staff ID: "))
         self.Name = str(input("Enter your name: "))
@@ -36,6 +37,7 @@ class Ticket:
             self.openTick -= 1
             self.closedTick += 1
         self.L.append(self)
+    #get the required ticket info to display later, does not work due to using the self. parts using the latest ticket data
     def displayprep(self):
         print("Ticket Number: ",self.tickNumber)
         print("Staff ID: ",self.ID)
@@ -44,6 +46,7 @@ class Ticket:
         print("Issue description: ",self.Desc)
         print("Response: ",self.Response)
         print("Status: ",self.Status)
+    #display all the ticket info one after the other following a status count
     def display(self):
         print("-------------------------------")
         print("Tickets created: ",self.tickCount)
