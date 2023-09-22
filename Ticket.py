@@ -12,6 +12,7 @@ class Ticket:
         self.Status=" "
         self.Response=" "
         while True:
+            #This will compare the input text to the working options in the code
             func_input=str(input("enter what you would like to do: "))
             if func_input.strip() == "create":
                 a=self.ticket()
