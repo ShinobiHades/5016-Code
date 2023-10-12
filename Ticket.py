@@ -1,61 +1,94 @@
 class Ticket:
-    tickCount = 0
-    L=[]
-    openTick=0
-    closedTick=0
-
-    def __init__(self):
-        self.ID=" "
-        self.name=" "
-        self.Email=" "
-        self.Desc=" "
-        self.Status=" "
-        self.Response=" "
-        while True:
-            #This will compare the input text to the working options in the code
-            func_input=str(input("enter what you would like to do: "))
-            if func_input.strip() == "create":
-                a=self.ticket()
-            elif func_input.strip() == "display":
-                self.display()
-            else:
-                print("that is not a valid command")
-    # create a ticket object
-    def ticket(self):
-        self.ID = str(input("Enter your staff ID: "))
-        self.Name = str(input("Enter your name: "))
-        self.Email = str(input("Enter your contact email: "))
-        self.Desc = str(input("Enter a description of your issue: "))
-        Ticket.tickCount += 1
-        self.tickNumber = Ticket.tickCount + 2000
-        self.Status = "Open"
+    counter = 2000  # static counter for ticket number calculation
+    
+    def __init__(self, staff_ID, name, email, description):
+        self.Ticket_Number = Ticket.counter + 1
+        Ticket.counter += 1
+        self.StaffID = staff_ID
+        self.Name = name
+        self.Email = email
+        self.Description = description
         self.Response = "Not yet provided"
-        self.openTick +=1
-        if self.Desc.strip() == "password change":
-            newPass = self.ID[0:2]+self.Name[0:3]
-            self.Response = newPass
+        self.Status = "Open"
+        # code to check if the ticket is for a password change
+        if self.Description.lower() == "password change":
+            generated_password = self.StaffID[0:2]+self.Name[0:3]
+            self.Response = "New Password has been generated: " + generated_password
             self.Status = "Closed"
-            self.openTick -= 1
-            self.closedTick += 1
-        self.L.append(self)
-    #get the required ticket info to display later, does not work due to using the self. parts using the latest ticket data
-    def displayprep(self):
-        print("Ticket Number: ",self.tickNumber)
-        print("Staff ID: ",self.ID)
-        print("Name: ",self.Name)
-        print("Email: ",self.Email)
-        print("Issue description: ",self.Desc)
-        print("Response: ",self.Response)
-        print("Status: ",self.Status)
-    #display all the ticket info one after the other following a status count
-    def display(self):
-        print("-------------------------------")
-        print("Tickets created: ",self.tickCount)
-        print("Open tickets: ",self.openTick)
-        print("Closed tickets: ",self.closedTick)
-        print("-------------------------------")
-        for i in range(self.tickCount):
-            print("-------------------------------")
-            self.L[i].displayprep()
-            print("-------------------------------")
-                
+
+
+ticket_list = []
+# ticket testing code
+# ticket1 = Ticket("MARIAH", "Mariah", "Mariah@whitecliffe.ac.nz", "Monitor not working")
+# ticket_list.append(ticket1)
+# ticket2 = Ticket("INNA", "Inna", "inna@whitecliffe.ac.nz", "Password change")
+# ticket_list.append(ticket2)
+# ticket3 = Ticket("JOHNS", "John", "john@whitecliffe.ac.nz", "Request for a video-camera for conferences")
+# ticket_list.append(ticket3)
+
+
+# code to pull up specific tickets
+def ticket_search(ticket_num):
+    for t in ticket_list:
+        if t.Ticket_Number == int(ticket_num):
+            return t
+
+
+# used to calculate the number of open and closed tickets
+def show_statistics():
+    tickets_open = 0
+    tickets_closed = 0
+    for t in ticket_list:
+        if t.Status == "Open" or t.Status == "Reopened":
+            tickets_open += 1
+        elif t.Status == "Closed":
+            tickets_closed += 1
+    print(f"Tickets open: {tickets_open}")
+    print(f"Tickets Closed: {tickets_closed}")
+    print(f"Total Tickets: {tickets_open + tickets_closed}")
+
+
+def display(ticket):
+    print(f"Ticket Number: {ticket.Ticket_Number}")
+    print(f"StaffID: {ticket.StaffID}")
+    print(f"Name: {ticket.Name}")
+    print(f"Email: {ticket.Email}")
+    print(f"Description: {ticket.Description}")
+    print(f"Response: {ticket.Response}")
+    print(f"Status: {ticket.Status}")
+
+
+def display_all():
+    for t in ticket_list:
+        print(f"Ticket Number: {t.Ticket_Number}")
+        print(f"StaffID: {t.StaffID}")
+        print(f"Name: {t.Name}")
+        print(f"Email: {t.Email}")
+        print(f"Description: {t.Description}")
+        print(f"Response: {t.Response}")
+        print(f"Status: {t.Status}")
+    show_statistics()
+
+
+def respond(ticket):
+    response = input("How would you like to respond to this ticket? \n > ")
+    ticket.Response = response
+    close = input("Would you like to close this ticket? y/n \n >")
+    if close.lower() == "y":
+        ticket.Status = "Closed"
+    display(ticket)
+
+
+def reopen(ticket):
+    ticket.Status = "Reopened"
+    display(ticket)
+
+
+def create():
+    staff_ID = input("Enter staff ID: ")
+    name = input("Enter name: ")
+    email = input("Enter email: ")
+    description = input("Enter description of issue: ")
+    new_ticket = Ticket(staff_ID, name, email, description)
+    ticket_list.append(new_ticket)
+    display(new_ticket)
