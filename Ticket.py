@@ -1,6 +1,7 @@
 class Ticket:
     counter = 2000  # static counter for ticket number calculation
-    
+
+    # used to commit entered data to a new ticket
     def __init__(self, staff_ID, name, email, description):
         self.Ticket_Number = Ticket.counter + 1
         Ticket.counter += 1
@@ -48,6 +49,7 @@ def show_statistics():
     print(f"Total Tickets: {tickets_open + tickets_closed}")
 
 
+# used to display the ticket data for a single ticket
 def display(ticket):
     print(f"Ticket Number: {ticket.Ticket_Number}")
     print(f"StaffID: {ticket.StaffID}")
@@ -58,6 +60,7 @@ def display(ticket):
     print(f"Status: {ticket.Status}")
 
 
+# used to display the ticket data for all tickets
 def display_all():
     for t in ticket_list:
         print(f"Ticket Number: {t.Ticket_Number}")
@@ -70,6 +73,7 @@ def display_all():
     show_statistics()
 
 
+# used to have techs respond to created tickets
 def respond(ticket):
     response = input("How would you like to respond to this ticket? \n > ")
     ticket.Response = response
@@ -79,11 +83,13 @@ def respond(ticket):
     display(ticket)
 
 
+# used to reopen a ticket
 def reopen(ticket):
     ticket.Status = "Reopened"
     display(ticket)
 
 
+# used to create a new ticket
 def create():
     staff_ID = input("Enter staff ID: ")
     name = input("Enter name: ")
